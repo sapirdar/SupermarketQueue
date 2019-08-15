@@ -26,21 +26,28 @@ namespace SupermarketQueue
 
         public void RunQueue()
         {
-            // An action to proccess orders in cash desk
-            Action processOrdersAction = () =>
+            try
             {
-                ProcessOrders();
-            };
+                // An action to proccess orders in cash desk
+                Action processOrdersAction = () =>
+                {
+                    ProcessOrders();
+                };
 
-            // An action to add customers to the line by defined rate
-            Action processCustomerQueueAction = () =>
+                // An action to add customers to the line by defined rate
+                Action processCustomerQueueAction = () =>
+                {
+                    ProcessCustomerQueue();
+                };
+
+                // Start the 2 concurrent actions
+                Parallel.Invoke(processOrdersAction, processCustomerQueueAction);
+            }
+            catch (Exception)
             {
-                ProcessCustomerQueue();
-            };
-
-            // Start the 2 concurrent actions
-            Parallel.Invoke(processOrdersAction, processCustomerQueueAction);
-
+                //TODO: log error
+                Console.WriteLine("An error as occured");
+            }
         }
 
 
@@ -66,14 +73,16 @@ namespace SupermarketQueue
             timer.Elapsed += OnCustomerQueueTimerEvent;
 
             //Start the timer
-            timer.Enabled = true; 
+            timer.Enabled = true;
         }
 
         private void SingleOrderProcess()
         {
+            // Keep the queue consumer alive
             while (true)
             {
-                while (queue.TryDequeue(out string localCustomerId))
+                // try pulling customer from the queue
+                if (queue.TryDequeue(out string localCustomerId))
                 {
                     Console.WriteLine($"Order process started, Customer: {localCustomerId}, Queue size: {queue.Count}");
 
@@ -86,7 +95,6 @@ namespace SupermarketQueue
 
                     Console.WriteLine($"Order process complete, Customer: {localCustomerId}, Queue size: {queue.Count}");
                 }
-
             }
         }
 

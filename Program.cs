@@ -18,7 +18,5 @@ namespace SupermarketQueue
             superMarketOrderProcess.RunQueue();
             Console.ReadKey();
         }
-
-
     }
 }
