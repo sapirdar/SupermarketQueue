@@ -7,7 +7,7 @@ using System.Timers;
 
 namespace SupermarketQueue
 {
-    public class SuperMarketOrderProcess
+    public class SuperQueue
     {
         // Get configurations  / set defaults: 
         private readonly int CashDeskCount = ConfigurationManager.AppSettings["CashDeskCount"] != null ?

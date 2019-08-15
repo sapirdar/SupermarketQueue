@@ -14,7 +14,7 @@ namespace SupermarketQueue
     {
         static void Main(string[] args)
         {
-            SuperMarketOrderProcess superMarketOrderProcess = new SuperMarketOrderProcess();
+            SuperQueue superMarketOrderProcess = new SuperQueue();
             superMarketOrderProcess.RunQueue();
             Console.ReadKey();
         }
